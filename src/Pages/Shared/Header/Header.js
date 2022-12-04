@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Image } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { FaUserAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../contexts/AuthProvider/AuthProvider";
 import LeftSideNav from "../LeftSideNav/LeftSideNav";
+import Button from "react-bootstrap/Button";
 
 const Header = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {})
+      .then((error) => console.error(error));
+  };
+
   return (
     <Navbar
       collapseOnSelect
@@ -37,9 +49,31 @@ const Header = () => {
             </NavDropdown>
           </Nav>
           <Nav>
-            <Nav.Link href="#deets">More deets</Nav.Link>
+            <Nav.Link href="#deets">
+              {user?.uid ? (
+                <>
+                  <span>{user?.displayName}</span>
+                  <Button variant="light" onClick={handleLogOut}>
+                    Log out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">Login</Link>
+                  <Link to="/register">Register </Link>
+                </>
+              )}
+            </Nav.Link>
             <Nav.Link eventKey={2} href="#memes">
-              Dank memes
+              {user?.photoURL ? (
+                <Image
+                  style={{ height: "40px" }}
+                  roundedCircle
+                  src={user?.photoURL}
+                ></Image>
+              ) : (
+                <FaUserAlt></FaUserAlt>
+              )}
             </Nav.Link>
           </Nav>
           <div className="d-lg-none">

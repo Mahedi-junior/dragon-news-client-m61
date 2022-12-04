@@ -2,29 +2,29 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import Image from "react-bootstrap/Image";
-import { FaRegBookmark, FaShareAlt } from "react-icons/fa";
+import { FaEye, FaRegBookmark, FaShareAlt, FaStar } from "react-icons/fa";
 
 const NewsSummaryCard = ({ news }) => {
-  const { _id, title, author, details, image_url, total_view } = news;
+  const { _id, title, author, details, image_url, total_view, rating } = news;
   return (
     <Card className="mb-4">
       <Card.Header className="d-flex justify-content-between align-items-center">
         <div className="d-flex">
           <Image
-            src={author.img}
+            src={author?.img}
             className="me-2"
             style={{ height: "60px" }}
             roundedCircle
           ></Image>
 
           <div>
-            <p>{author.name}</p>
-            <p>{author.published_date}</p>
+            <p className="mb-0">{author?.name}</p>
+            <p>{author?.published_date}</p>
           </div>
         </div>
 
         <div className="">
-          <FaRegBookmark></FaRegBookmark>
+          <FaRegBookmark className="me-2"></FaRegBookmark>
           <FaShareAlt></FaShareAlt>
         </div>
       </Card.Header>
@@ -43,7 +43,17 @@ const NewsSummaryCard = ({ news }) => {
           )}
         </Card.Text>
       </Card.Body>
-      <Card.Footer className="text-muted">2 days ago</Card.Footer>
+
+      <Card.Footer className="d-flex justify-content-between">
+        <div className="">
+          <FaStar className="text-warning"></FaStar>
+          <span>{rating?.number}</span>
+        </div>
+        <div className="">
+          <FaEye className="me-2"></FaEye>
+          <span>{total_view}</span>
+        </div>
+      </Card.Footer>
     </Card>
   );
 };
